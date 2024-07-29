@@ -1,0 +1,36 @@
+#!/bin/bash
+
+FILE_PATH="/c/Users/SU40134747/documents/shellscript/bsrtestsheet.csv"
+
+
+declare -A SERVER_DETAILS
+
+echo "Enter 'A' to print OS_name and server_count
+Enter 'B' to Disk_count and server_name"
+read USER_OPTION
+echo
+if [[ "$USER_OPTION" =~ ^[Aa]$ ]]
+then
+        echo "Please find the server_count and OS_name"
+	echo
+	SERVER_DETAILS[OS_DETAILS]=$(cut -f2 -d, "$FILE_PATH" | tail -n +2 | sort | uniq -c)
+        echo "${SERVER_DETAILS[OS_DETAILS]}"
+elif [[ "$USER_OPTION" =~ ^[Bb]$ ]]
+then
+	echo "please enter the server name"
+	read SERVER_NAME
+	if [[ $(cut -f1 -d, "$FILE_PATH" | grep -i "$SERVER_NAME") ]]
+	then
+	    echo
+	    echo "please find the Disk_count and server_name"
+	    echo
+	    SERVER_DETAILS[DISK_COUNT]=$(cut -f1 -d, "$FILE_PATH" | tail -n +2 | grep -i $SERVER_NAME | uniq -c)
+	    SERVER_DETAILS[DISK_SIZE]=$(grep -i "$SERVER_NAME" $FILE_PATH | awk -F "," '{print $5}' | gawk '{ sum += $1 }; END { print sum }')
+	    echo "${SERVER_DETAILS[DISK_COUNT]}" "${SERVER_DETAILS[DISK_SIZE]}GB"
+        else
+	    echo
+	    echo "$SERVER_NAME details are not present in file"
+	fi
+else
+	echo "$USER_OPTION is not one of 'A' 'B'"
+fi
