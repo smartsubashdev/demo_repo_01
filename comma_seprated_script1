@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "enter the detail you required"
+read details
+
+if [ "$details"=="OS Type" ]
+       then
+       head -n 1 awk '{print $1,$2}' /c/Users/SU40134747/documents/shellscript/comma_seprated 
+       grep -i $details /c/Users/SU40134747/documents/shellscript/comma_seprated
+fi
